@@ -4,6 +4,8 @@ The functionality of this application is similar to the most popular app on the 
 
 # Login && Registration PROCESSES
 ![registrationProcess](https://user-images.githubusercontent.com/13642892/75624113-a099e280-5bb1-11ea-99ee-e76c6758a53a.gif)
+![login](https://user-images.githubusercontent.com/13642892/75624171-287fec80-5bb2-11ea-9956-801c71fb913b.gif)
+
 # Messaging
 ![messaging](https://user-images.githubusercontent.com/13642892/75623885-236d6e00-5baf-11ea-814e-f7ac3882864c.gif)
 ![messaging2](https://user-images.githubusercontent.com/13642892/75623971-0e450f00-5bb0-11ea-89df-40b26a764257.gif)
