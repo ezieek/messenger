@@ -11,5 +11,5 @@ The successful registration and login process takes place through Firebase Authe
 ![login](https://user-images.githubusercontent.com/13642892/75624171-287fec80-5bb2-11ea-9956-801c71fb913b.gif)
 
 # Messaging process
-Sent messages are stored in Realtime Database provided by Firebase. There are implemented methods to protect them against getting messages that were not addressed to us.
+Messaging process starts only when new user is added to your friend list. Sent messages are stored in Realtime Database provided by Firebase. There are implemented methods to protect them against getting messages that were not addressed to us.
 
