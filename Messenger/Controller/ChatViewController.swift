@@ -23,58 +23,78 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UIGestureRecogn
     var textMessage: String?
     var bottomConstraint: NSLayoutConstraint?
 
-    lazy var chatCollectionView: UICollectionView = {
+    private lazy var chatCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        let cc = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cc.backgroundColor = UIColor(displayP3Red: 230/255, green: 126/255, blue: 34/255, alpha: 1)
-        cc.register(MessageCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-        cc.dataSource = self
-        cc.delegate = self
-        return cc
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = UIColor(displayP3Red: 230/255, green: 126/255, blue: 34/255, alpha: 1)
+        collectionView.register(MessageCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        return collectionView
     }()
     
-    lazy var mainView: UIView = {
-        let mv = UIView()
-        return mv
+    private lazy var mainView: UIView = {
+        let view = UIView()
+        return view
     }()
     
-    lazy var messageTextField: UITextField = {
-        let mt = UITextField(frame: .zero)
-        mt.backgroundColor = UIColor(displayP3Red: 230/255, green: 126/255, blue: 34/255, alpha: 1)
-        mt.attributedPlaceholder = NSAttributedString(string: "Put your text here", attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)])
-        mt.textAlignment = .center
-        mt.layer.borderWidth = 1
-        mt.layer.borderColor = CGColor(srgbRed: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-        mt.layer.cornerRadius = 10
-        mt.layer.masksToBounds = true
-        mt.autocorrectionType = .no
-        return mt
+    private lazy var messageTextField: UITextField = {
+        let textField = UITextField(frame: .zero)
+        textField.backgroundColor = UIColor(displayP3Red: 230/255, green: 126/255, blue: 34/255, alpha: 1)
+        textField.attributedPlaceholder = NSAttributedString(string: "Put your text here", attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)])
+        textField.textAlignment = .center
+        textField.layer.borderWidth = 1
+        textField.layer.borderColor = CGColor(srgbRed: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        textField.layer.cornerRadius = 10
+        textField.layer.masksToBounds = true
+        textField.autocorrectionType = .no
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        return textField
     }()
     
-    lazy var sendButton: UIButton = {
-        let sb = UIButton(type: .system)
-        sb.setTitle("Wyslij", for: .normal)
-        sb.setTitleColor(UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1), for: .normal)
-        sb.layer.borderWidth = 1
-        sb.layer.borderColor = CGColor(srgbRed: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-        sb.layer.cornerRadius = 10
-        sb.layer.masksToBounds = true
-        sb.addTarget(self, action: #selector(sendButtonPressed), for: .touchUpInside)
-        return sb
+    private lazy var sendButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Wyslij", for: .normal)
+        button.setTitleColor(UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1), for: .normal)
+        button.layer.borderWidth = 1
+        button.layer.borderColor = CGColor(srgbRed: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        button.layer.cornerRadius = 10
+        button.layer.masksToBounds = true
+        button.addTarget(self, action: #selector(sendButtonPressed), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }()
     
-    lazy var backButton: UIButton = {
-        let bb = UIButton(type: .system)
-        bb.setTitle("OK", for: .normal)
-        bb.setTitleColor(UIColor(displayP3Red: 230/255, green: 126/255, blue: 34/255, alpha: 1), for: .normal)
-        bb.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
-        return bb
+    private lazy var backButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("OK", for: .normal)
+        button.setTitleColor(UIColor(displayP3Red: 230/255, green: 126/255, blue: 34/255, alpha: 1), for: .normal)
+        button.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor(displayP3Red: 230/255, green: 126/255, blue: 34/255, alpha: 1)
+        setupNavigatonBar()
+        setupObjects()
+        setupNotifications()
+        loadMessages()
+        
+    }
+        
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        let section = 0
+        let lastItemIndex = self.chatCollectionView.numberOfItems(inSection: section) - 1
+        let indexPath:NSIndexPath = NSIndexPath.init(item: lastItemIndex, section: section)
+        self.chatCollectionView.scrollToItem(at: indexPath as IndexPath, at: .bottom, animated: true)
+    }
+    
+    func setupNavigatonBar() {
         if titleName == nil {
             titleName = ""
         }
@@ -84,30 +104,19 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UIGestureRecogn
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: backButton)
         
         navigationItem.hidesBackButton = true
-        setupObjects()
-        
+    }
+    
+    func setupTapGesture() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        
         tapGestureRecognizer.delegate = self
-        
-        self.chatCollectionView.addGestureRecognizer(tapGestureRecognizer)
-        
-         NotificationCenter.default.addObserver(self, selector: #selector(keyboardNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
-               
+        chatCollectionView.addGestureRecognizer(tapGestureRecognizer)
+    }
+    
+    func setupNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
-               
         bottomConstraint = NSLayoutConstraint(item: mainView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)
         view.addConstraint(bottomConstraint!)
-
-        loadMessages()
-        
-    }
-        
-    override func viewDidLayoutSubviews() {
-        let section = 0
-        let lastItemIndex = self.chatCollectionView.numberOfItems(inSection: section) - 1
-        let indexPath:NSIndexPath = NSIndexPath.init(item: lastItemIndex, section: section)
-        self.chatCollectionView.scrollToItem(at: indexPath as IndexPath, at: .bottom, animated: true)
     }
     
     func loadMessages() {
@@ -209,7 +218,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UIGestureRecogn
     }
     
     func setupObjects() {
-        [chatCollectionView, mainView].forEach({view.addSubview($0)})
+        [chatCollectionView, mainView].forEach{view.addSubview($0)}
         
         chatCollectionView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: mainView.topAnchor, trailing: view.trailingAnchor, padding: .init(top: 10, left: 10, bottom: 10, right: 10), size: .init(width: screen.width, height: 0))
         
@@ -232,7 +241,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UIGestureRecogn
     
 }
 
-extension ChatViewController : UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension ChatViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return messages.count
@@ -243,7 +252,7 @@ extension ChatViewController : UICollectionViewDataSource, UICollectionViewDeleg
         
         let message = messages[indexPath.row]
         cell.message = message
-        textMessage = messages[indexPath.row].messageText
+        textMessage = message.messageText
         
         if message.fromUser == Auth.auth().currentUser?.uid {
             cell.textLabel1.textAlignment = .left
@@ -255,6 +264,9 @@ extension ChatViewController : UICollectionViewDataSource, UICollectionViewDeleg
             return cell
         }
     }
+}
+
+extension ChatViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
