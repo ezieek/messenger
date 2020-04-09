@@ -18,25 +18,28 @@ class UserViewController: UIViewController {
     var loginViewController = LoginViewController()
     var userNameUsed: [String] = Array()
     
-    lazy var userTableView : UITableView = {
-        let tv = UITableView()
-        tv.separatorColor = .white
-        tv.backgroundColor = UIColor(displayP3Red: 230/255, green: 126/255, blue: 34/255, alpha: 1)
-        tv.register(UserCell.self, forCellReuseIdentifier: reuseIdentifier)
-        tv.delegate = self
-        tv.dataSource = self
-        return tv
+    private lazy var userTableView : UITableView = {
+        let tableView = UITableView()
+        tableView.separatorColor = .white
+        tableView.backgroundColor = UIColor(displayP3Red: 230/255, green: 126/255, blue: 34/255, alpha: 1)
+        tableView.register(UserCell.self, forCellReuseIdentifier: reuseIdentifier)
+        tableView.delegate = self
+        tableView.dataSource = self
+        return tableView
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         view.backgroundColor = UIColor(displayP3Red: 230/255, green: 126/255, blue: 34/255, alpha: 1)
         setupNavBar()
         setupObjects()
         fetchingOnlySavedFriends()
+        
     }
     
     func setupNavBar() {
+        
         navigationItem.setHidesBackButton(true, animated: true)
         
         let logoutButton = UIButton(type: .system)
@@ -49,6 +52,7 @@ class UserViewController: UIViewController {
         let composeButton = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(newMessageButtonPressed))
         composeButton.tintColor = UIColor(displayP3Red: 230/255, green: 126/255, blue: 34/255, alpha: 1)
         navigationItem.rightBarButtonItem = composeButton
+        
     }
     
     @objc func logoutButtonPressed() {
@@ -62,7 +66,7 @@ class UserViewController: UIViewController {
     
     func setupObjects() {
         
-        [userTableView].forEach({view.addSubview($0)})
+        [userTableView].forEach{view.addSubview($0)}
         
         userTableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 0, left: -10, bottom: 0, right: 10), size: .init(width: screen.width, height: 0))
     }
@@ -136,8 +140,8 @@ class UserViewController: UIViewController {
     }
 }
 
-extension UserViewController : UITableViewDataSource, UITableViewDelegate {
-    //MARK: - TableView DataSource Methods
+extension UserViewController : UITableViewDataSource {
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return users.count
     }
@@ -148,14 +152,15 @@ extension UserViewController : UITableViewDataSource, UITableViewDelegate {
         cell.user = user
         return cell
     }
+}
+
+extension UserViewController: UITableViewDelegate {
     
-    //MARK: - TableView Delegate Methods
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         DispatchQueue.main.async {
             let vc = ChatViewController()
             vc.uidReceived = self.users[indexPath.row].messageToUserID
