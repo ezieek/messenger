@@ -14,41 +14,41 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
     var loginViewController = LoginViewController()
     let screen = UIScreen.main.bounds
     
-    lazy var loginButton : UIButton = {
-        let rb = UIButton(type: .system)
-        rb.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
-        rb.setTitle("Already have an account? Sign in!", for: .normal)
-        rb.setTitleColor(UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1), for: .normal)
-        rb.contentHorizontalAlignment = .right
-        return rb
+    private lazy var loginButton : UIButton = {
+        let button = UIButton(type: .system)
+        button.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
+        button.setTitle("Already have an account? Sign in!", for: .normal)
+        button.setTitleColor(UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1), for: .normal)
+        button.contentHorizontalAlignment = .right
+        return button
     }()
     
-    lazy var logoImage: UIImageView = {
-        let li = UIImageView()
-        li.image = UIImage(named: "as1-2")?.withRenderingMode(.alwaysOriginal)
-        li.translatesAutoresizingMaskIntoConstraints = false
-        return li
+    private lazy var logoImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "as1-2")?.withRenderingMode(.alwaysOriginal)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
     }()
     
-    lazy var logoTitle: UILabel = {
-        let lt = UILabel()
-        lt.text = "Messenger"
-        lt.font = .boldSystemFont(ofSize: screen.width * 0.1)
-        lt.textAlignment = .center
-        lt.translatesAutoresizingMaskIntoConstraints = false
-        return lt
+    private lazy var logoTitle: UILabel = {
+        let label = UILabel()
+        label.text = "Messenger"
+        label.font = .boldSystemFont(ofSize: screen.width * 0.1)
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
-    lazy var logoSubTitle: UILabel = {
-        let ls = UILabel()
-        ls.text = "by mwsoftware"
-        ls.font = .systemFont(ofSize: 25)
-        ls.textAlignment = .center
-        ls.translatesAutoresizingMaskIntoConstraints = false
-        return ls
+    private lazy var logoSubTitle: UILabel = {
+        let label = UILabel()
+        label.text = "by mwsoftware"
+        label.font = .systemFont(ofSize: 25)
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
-    lazy var nameLabel: UILabel = {
+    private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.text = "Put your name here"
         label.font = .systemFont(ofSize: screen.width * 0.035)
@@ -57,19 +57,21 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         return label
     }()
     
-    lazy var nameTextField : UITextField = {
-        let et = UITextField()
-        et.textColor = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-        et.attributedPlaceholder = .init(string: "nickname", attributes: [NSAttributedString.Key.foregroundColor : UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)])
-        et.textAlignment = .center
-        et.layer.borderColor = CGColor(srgbRed: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-        et.layer.borderWidth = 1
-        et.layer.cornerRadius = 10
-        et.autocorrectionType = .no
-        return et
+    private lazy var nameTextField : UITextField = {
+        let textField = UITextField()
+        textField.textColor = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        textField.attributedPlaceholder = .init(string: "nickname", attributes: [NSAttributedString.Key.foregroundColor : UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)])
+        textField.textAlignment = .center
+        textField.layer.borderColor = CGColor(srgbRed: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        textField.layer.borderWidth = 1
+        textField.layer.cornerRadius = 10
+        textField.autocorrectionType = .no
+        textField.delegate = self
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        return textField
     }()
     
-    lazy var emailLabel: UILabel = {
+    private lazy var emailLabel: UILabel = {
         let label = UILabel()
         label.text = "Put your email here"
         label.font = .systemFont(ofSize: screen.width * 0.035)
@@ -78,19 +80,21 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         return label
     }()
     
-    lazy var emailTextField : UITextField = {
-        let et = UITextField()
-        et.textColor = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-        et.attributedPlaceholder = .init(string: "jan.kowalski@gmail.com", attributes: [NSAttributedString.Key.foregroundColor : UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)])
-        et.textAlignment = .center
-        et.layer.borderColor = CGColor(srgbRed: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-        et.layer.borderWidth = 1
-        et.layer.cornerRadius = 10
-        et.autocorrectionType = .no
-        return et
+    private lazy var emailTextField : UITextField = {
+        let textField = UITextField()
+        textField.textColor = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        textField.attributedPlaceholder = .init(string: "jan.kowalski@gmail.com", attributes: [NSAttributedString.Key.foregroundColor : UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)])
+        textField.textAlignment = .center
+        textField.layer.borderColor = CGColor(srgbRed: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        textField.layer.borderWidth = 1
+        textField.layer.cornerRadius = 10
+        textField.autocorrectionType = .no
+        textField.delegate = self
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        return textField
     }()
     
-    lazy var passwordLabel: UILabel = {
+    private lazy var passwordLabel: UILabel = {
         let label = UILabel()
         label.text = "Put your password here"
         label.font = .systemFont(ofSize: screen.width * 0.035)
@@ -99,47 +103,45 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         return label
     }()
 
-    lazy var passwordTextField : UITextField = {
-        let pt = UITextField()
-        pt.textColor = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-        pt.attributedPlaceholder = .init(string: "******************", attributes: [NSAttributedString.Key.foregroundColor : UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)])
-        pt.textAlignment = .center
-        pt.layer.borderColor = CGColor(srgbRed: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-        pt.layer.borderWidth = 1
-        pt.layer.cornerRadius = 10
-        pt.autocorrectionType = .no
-        pt.isSecureTextEntry = true
-        return pt
+    private lazy var passwordTextField : UITextField = {
+        let textField = UITextField()
+        textField.textColor = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        textField.attributedPlaceholder = .init(string: "******************", attributes: [NSAttributedString.Key.foregroundColor : UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)])
+        textField.textAlignment = .center
+        textField.layer.borderColor = CGColor(srgbRed: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        textField.layer.borderWidth = 1
+        textField.layer.cornerRadius = 10
+        textField.autocorrectionType = .no
+        textField.isSecureTextEntry = true
+        textField.delegate = self
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        return textField
     }()
     
-    lazy var signUpButton : UIButton = {
-        let sb = UIButton(type: .system)
-        sb.addTarget(self, action: #selector(signUpButtonPressed), for: .touchUpInside)
-        sb.setImage(UIImage(named: "arr")?.withRenderingMode(.alwaysOriginal), for: .normal)
-        sb.translatesAutoresizingMaskIntoConstraints = false
-        return sb
+    private lazy var signUpButton : UIButton = {
+        let button = UIButton(type: .system)
+        button.addTarget(self, action: #selector(signUpButtonPressed), for: .touchUpInside)
+        button.setImage(UIImage(named: "arr")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    
         view.backgroundColor = UIColor(displayP3Red: 230/255, green: 126/255, blue: 34/255, alpha: 1)
         navigationItem.setHidesBackButton(true, animated: true)
-        
         setupObjects()
+        setupNotifications()
         
-        nameTextField.delegate = self
-        
-        emailTextField.delegate = self
-        
-        passwordTextField.delegate = self
-        
+    }
+    
+    func setupNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
-        
+              
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
+              
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardNotification), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
-        
     }
     
     deinit {
@@ -175,7 +177,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
                 alert.addAction(action)
                 self.present(alert, animated: true)
             } else {
-                let ref = Database.database().reference(fromURL: "https://messenger-application-eebc0.firebaseio.com/").child("users").child("allRegisteredUsers").childByAutoId()
+                let ref = Database.database().reference().child("users").child("allRegisteredUsers").childByAutoId()
                 let values = ["myName": name as Any, "myEmail": email as Any, "myUid": Auth.auth().currentUser?.uid as Any, "date": date]
                 ref.updateChildValues(values as [AnyHashable : Any]) { (err, ref) in
                     if err != nil {
@@ -204,7 +206,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
     
     func setupObjects() {
         
-        [loginButton, logoImage, logoTitle, logoSubTitle, nameLabel, nameTextField, emailLabel, emailTextField, passwordLabel, passwordTextField, signUpButton].forEach({view.addSubview($0)})
+        [loginButton, logoImage, logoTitle, logoSubTitle, nameLabel, nameTextField, emailLabel, emailTextField, passwordLabel, passwordTextField, signUpButton].forEach{view.addSubview($0)}
         
         loginButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: nil, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: screen.height * 0.015, left: 0, bottom: 0, right: screen.width * 0.05), size: .init(width: 0, height: screen.height * 0.05))
                

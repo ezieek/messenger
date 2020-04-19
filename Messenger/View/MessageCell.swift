@@ -10,20 +10,10 @@ import UIKit
 
 class MessageCell: UICollectionViewCell {
     
-    var message: Message? {
-        didSet {
-            
-            backgroundColor = .clear
-            textLabel1.text = message?.messageText
-            textLabel1.textColor = .white
-             
-            }
-    }
-    
-    lazy var textLabel1 : UILabel = {
+    lazy var textLabel : UILabel = {
         let tl = UILabel()
         tl.backgroundColor = .clear
-        tl.textColor = .black
+        tl.textColor = .white
         tl.layer.cornerRadius = 10
         tl.layer.masksToBounds = true
         tl.numberOfLines = 0
@@ -31,7 +21,7 @@ class MessageCell: UICollectionViewCell {
         return tl
     }()
     
-    lazy var leftCornerView : UIView = {
+    private lazy var leftCornerView : UIView = {
         let cv = UIView()
         cv.backgroundColor = .systemPink
         cv.layer.cornerRadius = 15
@@ -39,7 +29,7 @@ class MessageCell: UICollectionViewCell {
         return cv
     }()
     
-    lazy var rightCornerView : UIView = {
+    private lazy var rightCornerView : UIView = {
         let cv = UIView()
         cv.backgroundColor = .systemPink
         cv.layer.cornerRadius = 15
@@ -51,17 +41,18 @@ class MessageCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
+        backgroundColor = .clear
         setupObjects()
     }
     
     func setupObjects() {
         
-        [textLabel1].forEach({addSubview($0)})
+        [textLabel].forEach{addSubview($0)}
         
         NSLayoutConstraint.activate([
-            textLabel1.heightAnchor.constraint(greaterThanOrEqualTo: heightAnchor),
-            textLabel1.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-            textLabel1.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20)
+            textLabel.heightAnchor.constraint(greaterThanOrEqualTo: heightAnchor),
+            textLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            textLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20)
         ])
     }
     

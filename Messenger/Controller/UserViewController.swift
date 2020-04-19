@@ -18,22 +18,24 @@ class UserViewController: UIViewController {
     var loginViewController = LoginViewController()
     var userNameUsed: [String] = Array()
     
-    lazy var userTableView : UITableView = {
-        let tv = UITableView()
-        tv.separatorColor = .white
-        tv.backgroundColor = UIColor(displayP3Red: 230/255, green: 126/255, blue: 34/255, alpha: 1)
-        tv.register(UserCell.self, forCellReuseIdentifier: reuseIdentifier)
-        tv.delegate = self
-        tv.dataSource = self
-        return tv
+    private lazy var userTableView : UITableView = {
+        let tableView = UITableView()
+        tableView.separatorColor = .white
+        tableView.backgroundColor = UIColor(displayP3Red: 230/255, green: 126/255, blue: 34/255, alpha: 1)
+        tableView.register(UserCell.self, forCellReuseIdentifier: reuseIdentifier)
+        tableView.delegate = self
+        tableView.dataSource = self
+        return tableView
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         view.backgroundColor = UIColor(displayP3Red: 230/255, green: 126/255, blue: 34/255, alpha: 1)
         setupNavBar()
         setupObjects()
         fetchingOnlySavedFriends()
+        
     }
     
     func setupNavBar() {
@@ -41,6 +43,7 @@ class UserViewController: UIViewController {
         
         let logoutButton = UIButton(type: .system)
         logoutButton.setTitleColor(UIColor(red: 230/255, green: 126/255, blue: 34/255, alpha: 1), for: .normal)
+        
         let string = NSAttributedString(string: "Logout", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 18), NSAttributedString.Key.foregroundColor: UIColor(red: 230/255, green: 126/255, blue: 34/255, alpha: 1)])
         logoutButton.setAttributedTitle(string, for: .normal)
         logoutButton.addTarget(self, action: #selector(logoutButtonPressed), for: .touchUpInside)
@@ -61,8 +64,7 @@ class UserViewController: UIViewController {
     }
     
     func setupObjects() {
-        
-        [userTableView].forEach({view.addSubview($0)})
+        [userTableView].forEach{view.addSubview($0)}
         
         userTableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 0, left: -10, bottom: 0, right: 10), size: .init(width: screen.width, height: 0))
     }
@@ -136,26 +138,44 @@ class UserViewController: UIViewController {
     }
 }
 
-extension UserViewController : UITableViewDataSource, UITableViewDelegate {
-    //MARK: - TableView DataSource Methods
+extension UserViewController : UITableViewDataSource {
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return users.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = userTableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! UserCell
-        let user = users[indexPath.row]
-        cell.user = user
-        return cell
-    }
+        
+        guard let cell = userTableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as? UserCell else { return UITableViewCell() }
     
-    //MARK: - TableView Delegate Methods
+        let user = users[indexPath.row]
+        cell.textLabel?.text = user.messageToUser
+        cell.imageView!.image = UIImage(named: "user")
+        
+        if let user = user.messageText {
+            cell.detailTextLabel!.text = user
+        }
+        
+        if let seconds = user.timestamp?.doubleValue {
+            let timestampDate = NSDate(timeIntervalSince1970: seconds)
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "hh:mm:ss a"
+            cell.timeLabel.text = dateFormatter.string(from: timestampDate as Date)
+        }
+        
+        return cell
+        
+    }
+}
+
+extension UserViewController: UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         DispatchQueue.main.async {
             let vc = ChatViewController()
             vc.uidReceived = self.users[indexPath.row].messageToUserID
