@@ -66,10 +66,6 @@ class UserViewController: UIViewController {
     }
     
     func setupObjects() {
-<<<<<<< HEAD
-=======
-        
->>>>>>> b71e3fb1696f65e372ed39cd23e35702cdf32b84
         [userTableView].forEach{view.addSubview($0)}
         
         userTableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 0, left: -10, bottom: 0, right: 10), size: .init(width: screen.width, height: 0))

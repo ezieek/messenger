@@ -248,11 +248,7 @@ extension ChatViewController: UICollectionViewDataSource {
         guard let cell = chatCollectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? MessageCell else { return UICollectionViewCell() }
         
         let message = messages[indexPath.row]
-<<<<<<< HEAD
         cell.textLabel.text = message.messageText
-=======
-        cell.message = message
->>>>>>> b71e3fb1696f65e372ed39cd23e35702cdf32b84
         textMessage = message.messageText
         
         if message.fromUser == Auth.auth().currentUser?.uid {
