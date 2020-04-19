@@ -39,6 +39,7 @@ class UserViewController: UIViewController {
     }
     
     func setupNavBar() {
+        
         navigationItem.setHidesBackButton(true, animated: true)
         
         let logoutButton = UIButton(type: .system)
@@ -52,6 +53,7 @@ class UserViewController: UIViewController {
         let composeButton = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(newMessageButtonPressed))
         composeButton.tintColor = UIColor(displayP3Red: 230/255, green: 126/255, blue: 34/255, alpha: 1)
         navigationItem.rightBarButtonItem = composeButton
+        
     }
     
     @objc func logoutButtonPressed() {
@@ -64,6 +66,10 @@ class UserViewController: UIViewController {
     }
     
     func setupObjects() {
+<<<<<<< HEAD
+=======
+        
+>>>>>>> b71e3fb1696f65e372ed39cd23e35702cdf32b84
         [userTableView].forEach{view.addSubview($0)}
         
         userTableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 0, left: -10, bottom: 0, right: 10), size: .init(width: screen.width, height: 0))
