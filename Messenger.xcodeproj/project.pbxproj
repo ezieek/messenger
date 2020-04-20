@@ -160,6 +160,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B6A7AF2E239FD089001D283D /* Build configuration list for PBXNativeTarget "Messenger" */;
 			buildPhases = (
+				ED9A3A97244D84E70062E4B8 /* SwiftLint */,
 				3E8391F17FB9FCB96202565A /* [CP] Check Pods Manifest.lock */,
 				B6A7AF16239FD087001D283D /* Sources */,
 				B6A7AF17239FD087001D283D /* Frameworks */,
@@ -261,6 +262,24 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Messenger/Pods-Messenger-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		ED9A3A97244D84E70062E4B8 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

@@ -13,7 +13,7 @@ private let reuseIdentifier = "reuseCell"
 
 class NewMessageViewController: UIViewController, UITextFieldDelegate {
 
-    var users : [User] = []
+    var users: [User] = []
     let screen = UIScreen.main.bounds
     var userViewController: UserViewController?
     var userNameUsed: [String] = Array()
@@ -32,12 +32,10 @@ class NewMessageViewController: UIViewController, UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = UIColor(displayP3Red: 230/255, green: 126/255, blue: 34/255, alpha: 1)
         setupNavBar()
         setupObjects()
         fetchingEveryRegisteredUsers()
-        
     }
     
     func fetchingEveryRegisteredUsers() {
@@ -70,7 +68,7 @@ class NewMessageViewController: UIViewController, UITextFieldDelegate {
     }
     
     func setupObjects() {
-        [newUsersTableView].forEach{view.addSubview($0)}
+        [newUsersTableView].forEach {view.addSubview($0)}
         
         newUsersTableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 2, left: -10, bottom: 0, right: 10), size: .init(width: screen.width, height: screen.height))
     }
@@ -110,9 +108,17 @@ extension NewMessageViewController: UITableViewDelegate {
             let names = self.users[indexPath.row].userName
             let email = self.users[indexPath.row].userEmail
             let userUid = self.users[indexPath.row].userID
-
-            let values = ["messageFromUser": Auth.auth().currentUser?.displayName as Any, "userEmail": Auth.auth().currentUser?.email as Any, "messageToUser": names as Any, "messageToUserID": userUid as Any, "userID": Auth.auth().currentUser?.uid as Any, "timestamp": Int(Date().timeIntervalSince1970), "messageText": "", "addedUserEmail": email] as [String : Any] as Any
-
+            
+            let values: [String: Any?] =
+                ["messageFromUser": Auth.auth().currentUser?.displayName,
+                "userEmail": Auth.auth().currentUser?.email,
+                "messageToUser": names,
+                "messageToUserID": userUid,
+                "userID": Auth.auth().currentUser?.uid,
+                "timestamp": Int(Date().timeIntervalSince1970),
+                "messageText": "",
+                "addedUserEmail": email]
+            
             let key = Database.database().reference().child("savedFriends").childByAutoId().key
        
             Database.database().reference().child("users").child("savedFriends").child((Auth.auth().currentUser?.displayName)!)
@@ -121,9 +127,9 @@ extension NewMessageViewController: UITableViewDelegate {
                 .observeSingleEvent(of: .value) { (snapshot) in
                     if snapshot.hasChildren() == true {
                         for snap in snapshot.children {
-                            let userSnap = snap as! DataSnapshot
-                            let userDict = userSnap.value as! [String: Any]
-                            let idAddedUser = userDict["messageToUserID"] as! String
+                            let userSnap = snap as? DataSnapshot
+                            let userDict = userSnap?.value as? [String: Any]
+                            let idAddedUser = userDict?["messageToUserID"] as? String
                             if idAddedUser != userUid {
                                 Database.database().reference().child("users").child("savedFriends")
                                     .child(Auth.auth().currentUser!.displayName!)

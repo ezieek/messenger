@@ -60,7 +60,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         let textField = UITextField()
         textField.textAlignment = .center
         textField.textColor = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-        textField.attributedPlaceholder = .init(string: "jan.kowalski@gmail.com", attributes: [NSAttributedString.Key.foregroundColor : UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)])
+        textField.attributedPlaceholder = .init(string: "jan.kowalski@gmail.com", attributes: [NSAttributedString.Key.foregroundColor: UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)])
         textField.layer.borderWidth = 1
         textField.layer.borderColor = CGColor(srgbRed: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         textField.layer.cornerRadius = 10
@@ -82,7 +82,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         let textField = UITextField()
         textField.textAlignment = .center
         textField.textColor = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-        textField.attributedPlaceholder = .init(string: "******************", attributes: [NSAttributedString.Key.foregroundColor : UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)])
+        textField.attributedPlaceholder = .init(string: "******************", attributes: [NSAttributedString.Key.foregroundColor: UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)])
         textField.layer.borderColor = CGColor(srgbRed: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         textField.layer.borderWidth = 1
         textField.layer.cornerRadius = 10
@@ -144,7 +144,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     @objc func loginButtonPressed() {
         
-        Auth.auth().signIn(withEmail: emailTextField.text!, password: passwordTextField.text!) { (user, error) in
+        Auth.auth().signIn(withEmail: emailTextField.text!, password: passwordTextField.text!) { (_, error) in
         
             if error != nil {
                 let alert = UIAlertController(title: "Error!", message: "An error occurred during the login process!", preferredStyle: .alert)
@@ -167,7 +167,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     func setupObjects() {
         
-        [registerButton, logoImage, logoTitle, logoSubTitle, emailLabel, emailTextField, passwordLabel, passwordTextField, loginButton].forEach{view.addSubview($0)}
+        [registerButton, logoImage, logoTitle, logoSubTitle, emailLabel, emailTextField, passwordLabel, passwordTextField, loginButton].forEach {view.addSubview($0)}
         
         registerButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: nil, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: screen.height * 0.015, left: 0, bottom: 0, right: screen.width * 0.05), size: .init(width: 0, height: screen.height * 0.05))
         
@@ -197,4 +197,3 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         self.view.endEditing(true)
     }
 }
-

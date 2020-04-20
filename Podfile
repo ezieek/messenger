@@ -6,6 +6,7 @@ target 'Messenger' do
   use_frameworks!
 
   # Pods for Messenger
+pod 'SwiftLint'
 pod 'Firebase'
 pod 'Firebase/Auth'
 pod 'Firebase/Database'

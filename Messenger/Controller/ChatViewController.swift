@@ -90,7 +90,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UIGestureRecogn
         super.viewDidLayoutSubviews()
         let section = 0
         let lastItemIndex = self.chatCollectionView.numberOfItems(inSection: section) - 1
-        let indexPath:NSIndexPath = NSIndexPath.init(item: lastItemIndex, section: section)
+        let indexPath: NSIndexPath = NSIndexPath.init(item: lastItemIndex, section: section)
         self.chatCollectionView.scrollToItem(at: indexPath as IndexPath, at: .bottom, animated: true)
     }
     
@@ -119,7 +119,6 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UIGestureRecogn
     }
     
     func loadMessages() {
-        
         messages = []
         
         Database.database().reference().child("messages").observe(.childAdded, with: { (snapshot) in
@@ -160,12 +159,11 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UIGestureRecogn
         let valuesForMessage = ["fromUser": Auth.auth().currentUser?.uid as Any,
                                 "toUser": uidReceived as Any,
                                 "messageText": messageTextField.text as Any,
-                                "timestamp": Int(Date().timeIntervalSince1970)] as [String : Any]
+                                "timestamp": Int(Date().timeIntervalSince1970)] as [String: Any]
         
         if messageTextField.text != "" {
-            refMessage.updateChildValues(valuesForMessage as [AnyHashable : Any])
+            refMessage.updateChildValues(valuesForMessage as [AnyHashable: Any])
         }
-        
     }
     
     @objc func sendButtonPressed() {
@@ -178,8 +176,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UIGestureRecogn
 
         queryRef.observeSingleEvent(of: .value) { (snapshot) in
             for snap in snapshot.children {
-                let userSnap = snap as! DataSnapshot
-                let uid = userSnap.key
+                let userSnap = snap as? DataSnapshot
+                guard let uid = userSnap?.key else { return }
                 Database.database().reference().child("users").child("savedFriends")
                     .child((Auth.auth().currentUser?.displayName)!)
                     .child(uid)
@@ -195,15 +193,15 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UIGestureRecogn
         
         if let userInfo = notification.userInfo {
             
-            let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+            let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
             
             let isKeyboardShowing = notification.name == UIResponder.keyboardWillShowNotification
             
-            bottomConstraint?.constant = isKeyboardShowing ? -keyboardFrame.height + 50 : 0
+            bottomConstraint?.constant = isKeyboardShowing ? -(keyboardFrame?.height ?? 0) + 50 : 0
             
             UIView.animate(withDuration: 0, delay: 0, options: .curveEaseOut, animations: {
                 self.view.layoutIfNeeded()
-            }) { (completion) in
+            }) { (_) in
                 let indexPath = NSIndexPath(item: self.messages.count - 1, section: 0)
                 self.chatCollectionView.scrollToItem(at: indexPath as IndexPath, at: .top, animated: true)
             }
@@ -215,7 +213,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UIGestureRecogn
     }
     
     func setupObjects() {
-        [chatCollectionView, mainView].forEach{view.addSubview($0)}
+        [chatCollectionView, mainView].forEach { view.addSubview($0) }
         
         chatCollectionView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: mainView.topAnchor, trailing: view.trailingAnchor, padding: .init(top: 10, left: 10, bottom: 10, right: 10), size: .init(width: screen.width, height: 0))
         
@@ -266,12 +264,8 @@ extension ChatViewController: UICollectionViewDataSource {
 extension ChatViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        let estimatedFrame = NSString(string: messages[indexPath.item].messageText ?? "").boundingRect(with: CGSize(width: screen.width * 0.7, height: 100), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 18)], context: nil)
-        
+        let estimatedFrame = NSString(string: messages[indexPath.item].messageText ?? "").boundingRect(with: CGSize(width: screen.width * 0.7, height: 100), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18)], context: nil)
         return CGSize(width: screen.width, height: estimatedFrame.height + 20)
-
     }
 
 }
-

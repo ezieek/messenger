@@ -14,7 +14,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
     var loginViewController = LoginViewController()
     let screen = UIScreen.main.bounds
     
-    private lazy var loginButton : UIButton = {
+    private lazy var loginButton: UIButton = {
         let button = UIButton(type: .system)
         button.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
         button.setTitle("Already have an account? Sign in!", for: .normal)
@@ -57,10 +57,10 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         return label
     }()
     
-    private lazy var nameTextField : UITextField = {
+    private lazy var nameTextField: UITextField = {
         let textField = UITextField()
         textField.textColor = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-        textField.attributedPlaceholder = .init(string: "nickname", attributes: [NSAttributedString.Key.foregroundColor : UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)])
+        textField.attributedPlaceholder = .init(string: "nickname", attributes: [NSAttributedString.Key.foregroundColor: UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)])
         textField.textAlignment = .center
         textField.layer.borderColor = CGColor(srgbRed: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         textField.layer.borderWidth = 1
@@ -80,10 +80,10 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         return label
     }()
     
-    private lazy var emailTextField : UITextField = {
+    private lazy var emailTextField: UITextField = {
         let textField = UITextField()
         textField.textColor = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-        textField.attributedPlaceholder = .init(string: "jan.kowalski@gmail.com", attributes: [NSAttributedString.Key.foregroundColor : UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)])
+        textField.attributedPlaceholder = .init(string: "jan.kowalski@gmail.com", attributes: [NSAttributedString.Key.foregroundColor: UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)])
         textField.textAlignment = .center
         textField.layer.borderColor = CGColor(srgbRed: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         textField.layer.borderWidth = 1
@@ -103,10 +103,10 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         return label
     }()
 
-    private lazy var passwordTextField : UITextField = {
+    private lazy var passwordTextField: UITextField = {
         let textField = UITextField()
         textField.textColor = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-        textField.attributedPlaceholder = .init(string: "******************", attributes: [NSAttributedString.Key.foregroundColor : UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)])
+        textField.attributedPlaceholder = .init(string: "******************", attributes: [NSAttributedString.Key.foregroundColor: UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)])
         textField.textAlignment = .center
         textField.layer.borderColor = CGColor(srgbRed: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         textField.layer.borderWidth = 1
@@ -118,7 +118,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         return textField
     }()
     
-    private lazy var signUpButton : UIButton = {
+    private lazy var signUpButton: UIButton = {
         let button = UIButton(type: .system)
         button.addTarget(self, action: #selector(signUpButtonPressed), for: .touchUpInside)
         button.setImage(UIImage(named: "arr")?.withRenderingMode(.alwaysOriginal), for: .normal)
@@ -128,49 +128,40 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
         view.backgroundColor = UIColor(displayP3Red: 230/255, green: 126/255, blue: 34/255, alpha: 1)
         navigationItem.setHidesBackButton(true, animated: true)
         setupObjects()
         setupNotifications()
-        
     }
     
     func setupNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
-              
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
-              
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardNotification), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
     
     deinit {
         
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-        
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-        
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
-        
     }
     
     @objc func loginButtonPressed() {
         
         self.navigationController?.pushViewController(LoginViewController(), animated: true)
-        
     }
     
     @objc func keyboardNotification(notification: NSNotification) {
        
         let isKeyboardShowing = notification.name == UIResponder.keyboardWillShowNotification
-        
         view.frame.origin.y = isKeyboardShowing ? -200 : 0
- 
     }
     
     @objc func signUpButtonPressed() {
         let email = emailTextField.text, password = passwordTextField.text, name = nameTextField.text, date = Int(Date().timeIntervalSince1970)
-        Auth.auth().createUser(withEmail: email!, password: password!) { (user, error) in
+        Auth.auth().createUser(withEmail: email!, password: password!) { (_, error) in
             if error != nil {
                 let alert = UIAlertController(title: "Error!", message: "An error occurred during the registration process!", preferredStyle: .alert)
                 let action = UIAlertAction(title: "Try again", style: .default, handler: nil)
@@ -179,7 +170,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
             } else {
                 let ref = Database.database().reference().child("users").child("allRegisteredUsers").childByAutoId()
                 let values = ["myName": name as Any, "myEmail": email as Any, "myUid": Auth.auth().currentUser?.uid as Any, "date": date]
-                ref.updateChildValues(values as [AnyHashable : Any]) { (err, ref) in
+                ref.updateChildValues(values as [AnyHashable: Any]) { (err, _) in
                     if err != nil {
                         print(err as Any)
                     } else {
@@ -190,7 +181,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
                 let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
                 changeRequest?.displayName = name
                 changeRequest?.commitChanges(completion: { (err) in
-                    if (err != nil) {
+                    if err != nil {
                         print("There is an error commiting changes of user profile!")
                     } else {
                         print("Everything works fine")
@@ -206,14 +197,14 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
     
     func setupObjects() {
         
-        [loginButton, logoImage, logoTitle, logoSubTitle, nameLabel, nameTextField, emailLabel, emailTextField, passwordLabel, passwordTextField, signUpButton].forEach{view.addSubview($0)}
+        [loginButton, logoImage, logoTitle, logoSubTitle, nameLabel, nameTextField, emailLabel, emailTextField, passwordLabel, passwordTextField, signUpButton].forEach {view.addSubview($0)}
         
         loginButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: nil, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: screen.height * 0.015, left: 0, bottom: 0, right: screen.width * 0.05), size: .init(width: 0, height: screen.height * 0.05))
-               
+        
         logoImage.anchor(top: loginButton.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: screen.height * 0.045, left: screen.width * 0.3, bottom: 0, right: screen.width * 0.3), size: .init(width: 0, height: screen.height * 0.2))
-       
+        
         logoTitle.anchor(top: logoImage.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: screen.width * 0.2, bottom: 0, right: screen.width * 0.2))
-       
+        
         logoSubTitle.anchor(top: logoTitle.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: screen.width * 0.2, bottom: 0, right: screen.width * 0.2))
         
         nameLabel.anchor(top: logoSubTitle.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: screen.height * 0.08, left: screen.width * 0.05, bottom: 0, right: 0), size: .init(width: 0, height: screen.height * 0.02))
@@ -232,12 +223,14 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
         emailTextField.resignFirstResponder()
         passwordTextField.resignFirstResponder()
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-
+        
         return self.view.endEditing(true)
     }
+    
 }

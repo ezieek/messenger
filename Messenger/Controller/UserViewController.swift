@@ -18,7 +18,7 @@ class UserViewController: UIViewController {
     var loginViewController = LoginViewController()
     var userNameUsed: [String] = Array()
     
-    private lazy var userTableView : UITableView = {
+    private lazy var userTableView: UITableView = {
         let tableView = UITableView()
         tableView.separatorColor = .white
         tableView.backgroundColor = UIColor(displayP3Red: 230/255, green: 126/255, blue: 34/255, alpha: 1)
@@ -35,11 +35,9 @@ class UserViewController: UIViewController {
         setupNavBar()
         setupObjects()
         fetchingOnlySavedFriends()
-        
     }
     
     func setupNavBar() {
-        
         navigationItem.setHidesBackButton(true, animated: true)
         
         let logoutButton = UIButton(type: .system)
@@ -66,16 +64,16 @@ class UserViewController: UIViewController {
     }
     
     func setupObjects() {
-        [userTableView].forEach{view.addSubview($0)}
+        [userTableView].forEach { view.addSubview($0) }
         
         userTableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 0, left: -10, bottom: 0, right: 10), size: .init(width: screen.width, height: 0))
     }
 
     @objc func newMessageButtonPressed() {
-        let vc = NewMessageViewController()
-        vc.userNameUsed = userNameUsed
-        vc.modalPresentationStyle = .fullScreen
-        self.navigationController?.pushViewController(vc, animated: true)
+        let view = NewMessageViewController()
+        view.userNameUsed = userNameUsed
+        view.modalPresentationStyle = .fullScreen
+        self.navigationController?.pushViewController(view, animated: true)
     }
     
     func fetchingOnlySavedFriends() {
@@ -100,23 +98,23 @@ class UserViewController: UIViewController {
 
                     if dataSnapshot.hasChildren() == true {
                         for snap in dataSnapshot.children {
-                            let userSnap = snap as! DataSnapshot
-                            let userDict = userSnap.value as! [String: Any]
-                            let messageToUserId = userDict["messageToUserID"] as! String
-                            let textMessage = userDict["messageText"] as! String
-                            let time = userDict["timestamp"] as! NSNumber
+                            let userSnap = snap as? DataSnapshot
+                            let userDict = userSnap?.value as? [String: Any?]
+                            let messageToUserId = userDict?["messageToUserID"] as? String
+                            let textMessage = userDict?["messageText"] as? String
+                            let time = userDict?["timestamp"] as? NSNumber
                                 
                             if messageToUserId == Auth.auth().currentUser?.uid {
                                 if user.messageText == "" {
                                     user.messageText = textMessage
                                 } else {
-                                    if time.int32Value > user.timestamp!.int32Value {
+                                    if time?.int32Value ?? 0 > user.timestamp!.int32Value {
                                         if textMessage == "" {
                                             user.messageText = "Ty: \(user.messageText!)"
                                         } else {
                                             user.messageText = textMessage
                                         }
-                                    } else if time.int32Value < user.timestamp!.int32Value {
+                                    } else if time?.int32Value ?? 0 < user.timestamp!.int32Value {
                                         user.messageText = "Ty: \(user.messageText!)"
                                     }
                                 }
@@ -140,7 +138,7 @@ class UserViewController: UIViewController {
     }
 }
 
-extension UserViewController : UITableViewDataSource {
+extension UserViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return users.count
@@ -153,6 +151,8 @@ extension UserViewController : UITableViewDataSource {
         let user = users[indexPath.row]
         cell.textLabel?.text = user.messageToUser
         cell.imageView!.image = UIImage(named: "user")
+        cell.imageView?.frame = CGRect(origin: CGPoint(x: -10, y: 0), size: CGSize(width: 10, height: 10))
+        cell.selectionStyle = .none
         
         if let user = user.messageText {
             cell.detailTextLabel!.text = user
@@ -179,12 +179,12 @@ extension UserViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         DispatchQueue.main.async {
-            let vc = ChatViewController()
-            vc.uidReceived = self.users[indexPath.row].messageToUserID
-            vc.emailReceived = self.users[indexPath.row].userEmail
-            vc.nameReceived = self.users[indexPath.row].messageToUser
-            vc.titleName = self.users[indexPath.row].messageToUser
-            self.navigationController?.pushViewController(vc, animated: true)
+            let view = ChatViewController()
+            view.uidReceived = self.users[indexPath.row].messageToUserID
+            view.emailReceived = self.users[indexPath.row].userEmail
+            view.nameReceived = self.users[indexPath.row].messageToUser
+            view.titleName = self.users[indexPath.row].messageToUser
+            self.navigationController?.pushViewController(view, animated: true)
         }
     }
 }

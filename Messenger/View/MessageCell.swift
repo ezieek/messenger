@@ -10,31 +10,31 @@ import UIKit
 
 class MessageCell: UICollectionViewCell {
     
-    lazy var textLabel : UILabel = {
-        let tl = UILabel()
-        tl.backgroundColor = .clear
-        tl.textColor = .white
-        tl.layer.cornerRadius = 10
-        tl.layer.masksToBounds = true
-        tl.numberOfLines = 0
-        tl.translatesAutoresizingMaskIntoConstraints = false
-        return tl
+    lazy var textLabel: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = .clear
+        label.textColor = .white
+        label.layer.cornerRadius = 10
+        label.layer.masksToBounds = true
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+        
+    private lazy var leftCornerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .systemPink
+        view.layer.cornerRadius = 15
+        view.layer.masksToBounds = true
+        return view
     }()
     
-    private lazy var leftCornerView : UIView = {
-        let cv = UIView()
-        cv.backgroundColor = .systemPink
-        cv.layer.cornerRadius = 15
-        cv.layer.masksToBounds = true
-        return cv
-    }()
-    
-    private lazy var rightCornerView : UIView = {
-        let cv = UIView()
-        cv.backgroundColor = .systemPink
-        cv.layer.cornerRadius = 15
-        cv.layer.masksToBounds = true
-        return cv
+    private lazy var rightCornerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .systemPink
+        view.layer.cornerRadius = 15
+        view.layer.masksToBounds = true
+        return view
     }()
     
     let screen = UIScreen.main.bounds
@@ -46,9 +46,7 @@ class MessageCell: UICollectionViewCell {
     }
     
     func setupObjects() {
-        
-        [textLabel].forEach{addSubview($0)}
-        
+        [textLabel].forEach { addSubview($0) }
         NSLayoutConstraint.activate([
             textLabel.heightAnchor.constraint(greaterThanOrEqualTo: heightAnchor),
             textLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
