@@ -9,11 +9,8 @@ Graphic appearance of the application is prepared to work on every size of iPhon
 
 Messenger is an example of MVC Design Pattern project. Its functionality is based on the most popular application on the Internet called Messenger designed by Facebook Inc. to store data and to make connection between users was used Firebase server. Firebase as backend service supports authentication using paswords, phone numbers, Google, Facebook and more. In my application there is only avaiable authentication using email and password. Data is synced across all clients in realtime and remains available even when an app goes offline. 
 
-# Design
-Selected colors, size of objects, and places where they were used were invented by me. There is a possible to test this app on every iPhone's.
-
-
 # Networking
+The Firebase Realtime Database is a cloud-hosted database. Data is stored as JSON and synchronized in realtime to every connected client. Instead of typical HTTP requests, the Firebase Realtime Database uses data synchronization - every time data changes, any connected device receives that update within miliseconds. Provide collaborative and immersive experiences without thinking about networking code. When apps go offline used Firebase Realtime Database SDK persists your data to disk. Once connectivity is reestablished, the client device receives any changes it missed, synchronizing it with the current server state.
 
 # Registration and login process
 The successful registration and login process takes place through Firebase Authentication. Sign-in method allows users to register using email and password. There is no way to register two accounts with the same email addresses also there is no possible to create a lot of new accounts with the same IP address.
