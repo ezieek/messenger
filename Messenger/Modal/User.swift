@@ -9,6 +9,7 @@
 import UIKit
 
 struct User {
+    
     var messageFromUser: String?
     var messageText: String?
     var messageToUser: String?

@@ -9,35 +9,32 @@
 import UIKit
 import Firebase
 
-private let reuseIdentifier = "reuseCell"
-
 class UserViewController: UIViewController {
     
     var users = [User]()
     let screen = UIScreen.main.bounds
     var loginViewController = LoginViewController()
     var userNameUsed: [String] = Array()
-    
-    private lazy var userTableView: UITableView = {
-        let tableView = UITableView()
-        tableView.separatorColor = .white
-        tableView.backgroundColor = UIColor(displayP3Red: 230/255, green: 126/255, blue: 34/255, alpha: 1)
-        tableView.register(UserCell.self, forCellReuseIdentifier: reuseIdentifier)
-        tableView.delegate = self
-        tableView.dataSource = self
-        return tableView
-    }()
+    let initObjects = UserView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor(displayP3Red: 230/255, green: 126/255, blue: 34/255, alpha: 1)
         setupNavBar()
-        setupObjects()
+        initObjects.userTableView.delegate = self
+        initObjects.userTableView.dataSource = self
         fetchingOnlySavedFriends()
     }
     
+    override func loadView() {
+        super.loadView()
+        
+        view = initObjects
+    }
+    
     func setupNavBar() {
+        
         navigationItem.setHidesBackButton(true, animated: true)
         
         let logoutButton = UIButton(type: .system)
@@ -51,10 +48,10 @@ class UserViewController: UIViewController {
         let composeButton = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(newMessageButtonPressed))
         composeButton.tintColor = UIColor(displayP3Red: 230/255, green: 126/255, blue: 34/255, alpha: 1)
         navigationItem.rightBarButtonItem = composeButton
-        
     }
     
     @objc func logoutButtonPressed() {
+        
         do {
             try Auth.auth().signOut()
             navigationController?.pushViewController(LoginViewController(), animated: true)
@@ -63,12 +60,6 @@ class UserViewController: UIViewController {
         }
     }
     
-    func setupObjects() {
-        [userTableView].forEach { view.addSubview($0) }
-        
-        userTableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 0, left: -10, bottom: 0, right: 10), size: .init(width: screen.width, height: 0))
-    }
-
     @objc func newMessageButtonPressed() {
         let view = NewMessageViewController()
         view.userNameUsed = userNameUsed
@@ -77,6 +68,7 @@ class UserViewController: UIViewController {
     }
     
     func fetchingOnlySavedFriends() {
+        
         Database.database().reference().child("users").child("savedFriends")
             .child((Auth.auth().currentUser?.displayName)!)
             .observe(.childAdded, with: { (snapshot) in
@@ -130,7 +122,7 @@ class UserViewController: UIViewController {
                     }
                                                 
                     DispatchQueue.main.async {
-                        self.userTableView.reloadData()
+                        self.initObjects.userTableView.reloadData()
                     }
                 }
             }
@@ -146,7 +138,7 @@ extension UserViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cell = userTableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as? UserCell else { return UITableViewCell() }
+        guard let cell = initObjects.userTableView.dequeueReusableCell(withIdentifier: initObjects.reuseIdentifier, for: indexPath) as? UserCell else { return UITableViewCell() }
     
         let user = users[indexPath.row]
         cell.textLabel?.text = user.messageToUser
@@ -167,7 +159,6 @@ extension UserViewController: UITableViewDataSource {
         }
         
         return cell
-        
     }
 }
 

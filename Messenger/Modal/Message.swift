@@ -6,9 +6,10 @@
 //  Copyright © 2019 MW. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 struct Message {
+    
     var fromUser: String?
     var toUser: String?
     var messageText: String?

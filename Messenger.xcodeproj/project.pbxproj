@@ -20,6 +20,11 @@
 		B6A7AF2A239FD089001D283D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B6A7AF28239FD089001D283D /* LaunchScreen.storyboard */; };
 		B6A7AF32239FD209001D283D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A7AF31239FD209001D283D /* Extensions.swift */; };
 		B6A7AF34239FD762001D283D /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A7AF33239FD762001D283D /* MessageCell.swift */; };
+		ED32FDF02473AB2F00C01634 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED32FDEF2473AB2F00C01634 /* RegisterView.swift */; };
+		ED32FDF22473AEAD00C01634 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED32FDF12473AEAD00C01634 /* LoginView.swift */; };
+		ED32FDF42473B04100C01634 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED32FDF32473B04100C01634 /* UserView.swift */; };
+		ED32FDF62473BB4E00C01634 /* NewMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED32FDF52473BB4E00C01634 /* NewMessageView.swift */; };
+		ED32FDF82473BC0500C01634 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED32FDF72473BC0500C01634 /* ChatView.swift */; };
 		ED3ABB3E244C7177001913CE /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = ED3ABB3D244C7176001913CE /* README.md */; };
 		ED70CC4223CCC7EB000D26B8 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED70CC4123CCC7EB000D26B8 /* UserViewController.swift */; };
 		ED70CC4423CCF5CC000D26B8 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED70CC4323CCF5CC000D26B8 /* User.swift */; };
@@ -44,6 +49,11 @@
 		BF2F4DE64A97E6CF2651E951 /* Pods-Messenger.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Messenger.debug.xcconfig"; path = "Target Support Files/Pods-Messenger/Pods-Messenger.debug.xcconfig"; sourceTree = "<group>"; };
 		CB0776406A0285471F3F94FE /* Pods_Messenger.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Messenger.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2876CB9FF8E0D5BBDCAFAB6 /* Pods-Messenger.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Messenger.release.xcconfig"; path = "Target Support Files/Pods-Messenger/Pods-Messenger.release.xcconfig"; sourceTree = "<group>"; };
+		ED32FDEF2473AB2F00C01634 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		ED32FDF12473AEAD00C01634 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		ED32FDF32473B04100C01634 /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
+		ED32FDF52473BB4E00C01634 /* NewMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageView.swift; sourceTree = "<group>"; };
+		ED32FDF72473BC0500C01634 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		ED3ABB3D244C7176001913CE /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		ED70CC4123CCC7EB000D26B8 /* UserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
 		ED70CC4323CCF5CC000D26B8 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -149,6 +159,11 @@
 			children = (
 				88812AF223E1B0F200139190 /* UserCell.swift */,
 				B6A7AF33239FD762001D283D /* MessageCell.swift */,
+				ED32FDEF2473AB2F00C01634 /* RegisterView.swift */,
+				ED32FDF12473AEAD00C01634 /* LoginView.swift */,
+				ED32FDF32473B04100C01634 /* UserView.swift */,
+				ED32FDF52473BB4E00C01634 /* NewMessageView.swift */,
+				ED32FDF72473BC0500C01634 /* ChatView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -290,12 +305,17 @@
 			files = (
 				B69F6ACB23A2310900DD360C /* LoginViewController.swift in Sources */,
 				88157C9723CEFB440095B4CA /* NewMessageViewController.swift in Sources */,
+				ED32FDF02473AB2F00C01634 /* RegisterView.swift in Sources */,
 				ED70CC4223CCC7EB000D26B8 /* UserViewController.swift in Sources */,
 				B6A7AF22239FD087001D283D /* ChatViewController.swift in Sources */,
 				B6A7AF1E239FD087001D283D /* AppDelegate.swift in Sources */,
 				B6A7AF20239FD087001D283D /* SceneDelegate.swift in Sources */,
+				ED32FDF42473B04100C01634 /* UserView.swift in Sources */,
 				B69F6AC923A226CC00DD360C /* RegisterViewController.swift in Sources */,
+				ED32FDF62473BB4E00C01634 /* NewMessageView.swift in Sources */,
+				ED32FDF22473AEAD00C01634 /* LoginView.swift in Sources */,
 				B69F6ACF23A26D8600DD360C /* Message.swift in Sources */,
+				ED32FDF82473BC0500C01634 /* ChatView.swift in Sources */,
 				B6A7AF34239FD762001D283D /* MessageCell.swift in Sources */,
 				88812AF323E1B0F200139190 /* UserCell.swift in Sources */,
 				ED70CC4423CCF5CC000D26B8 /* User.swift in Sources */,

@@ -11,35 +11,44 @@ import Firebase
 
 private let reuseIdentifier = "reuseCell"
 
-class NewMessageViewController: UIViewController, UITextFieldDelegate {
+class NewMessageViewController: UIViewController {
 
     var users: [User] = []
     let screen = UIScreen.main.bounds
     var userViewController: UserViewController?
     var userNameUsed: [String] = Array()
     var userName: [String] = []
+    let initObjects = NewMessageView()
     
-    private lazy var newUsersTableView: UITableView = {
-        let tableView = UITableView(frame: .zero)
-        tableView.backgroundColor = UIColor(displayP3Red: 230/255, green: 126/255, blue: 34/255, alpha: 1)
-        tableView.separatorColor = .white
-        tableView.register(UserCell.self, forCellReuseIdentifier: reuseIdentifier)
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        return tableView
-    }()
-
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         view.backgroundColor = UIColor(displayP3Red: 230/255, green: 126/255, blue: 34/255, alpha: 1)
         setupNavBar()
-        setupObjects()
+        initObjects.newUsersTableView.delegate = self
+        initObjects.newUsersTableView.dataSource = self
         fetchingEveryRegisteredUsers()
     }
     
+    override func loadView() {
+        super.loadView()
+        
+        view = initObjects
+    }
+    
+    func setupNavBar() {
+        
+        navigationItem.setHidesBackButton(true, animated: true)
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(displayP3Red: 230/255, green: 126/255, blue: 34/255, alpha: 1)]
+        navigationItem.title = "New Message"
+        
+        let doneButton = UIBarButtonItem(title: "Cancel", style: .done, target: self, action: #selector(doneButtonPressed))
+        doneButton.tintColor = UIColor(displayP3Red: 230/255, green: 126/255, blue: 34/255, alpha: 1)
+        navigationItem.leftBarButtonItem = doneButton
+    }
+    
     func fetchingEveryRegisteredUsers() {
-       
+        
         Database.database().reference().child("users").child("allRegisteredUsers").queryOrdered(byChild: "date").observe(.childAdded) { (snapshot) in
             
                 if let dictionary = snapshot.value as? [String: AnyObject] {
@@ -51,28 +60,13 @@ class NewMessageViewController: UIViewController, UITextFieldDelegate {
                 if user.userID != Auth.auth().currentUser?.uid {
                     self.users.append(user)
                     DispatchQueue.main.async {
-                        self.newUsersTableView.reloadData()
+                        self.initObjects.newUsersTableView.reloadData()
                     }
                 }
             }
         }
     }
 
-    func setupNavBar() {
-        navigationItem.setHidesBackButton(true, animated: true)
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(displayP3Red: 230/255, green: 126/255, blue: 34/255, alpha: 1)]
-        navigationItem.title = "New Message"
-        let doneButton = UIBarButtonItem(title: "Cancel", style: .done, target: self, action: #selector(doneButtonPressed))
-        doneButton.tintColor = UIColor(displayP3Red: 230/255, green: 126/255, blue: 34/255, alpha: 1)
-        navigationItem.leftBarButtonItem = doneButton
-    }
-    
-    func setupObjects() {
-        [newUsersTableView].forEach {view.addSubview($0)}
-        
-        newUsersTableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 2, left: -10, bottom: 0, right: 10), size: .init(width: screen.width, height: screen.height))
-    }
-    
     @objc func doneButtonPressed() {
         navigationController?.pushViewController(UserViewController(), animated: true)
     }
@@ -86,19 +80,19 @@ extension NewMessageViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cell = newUsersTableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as? UserCell else { return UITableViewCell() }
+        guard let cell = initObjects.newUsersTableView.dequeueReusableCell(withIdentifier: initObjects.reuseIdentifier, for: indexPath) as? UserCell else { return UITableViewCell() }
         
         let user = users[indexPath.row]
         cell.textLabel?.text = user.userName
         cell.detailTextLabel!.text = user.userEmail
         cell.imageView!.image = UIImage(named: "user")
         return cell
-        
     }
 }
     
 extension NewMessageViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
         return 75
     }
 
